@@ -312,13 +312,15 @@
         <div class="input-section">
             <h2>Add Person</h2>
             <div class="name-input-form">
-                <input type="text" id="person-name" placeholder="Enter name (e.g., Sam, Willy S, Scott (Bassoon))" />
+                <input type="text" id="person-name" placeholder="Enter name (e.g., Sam, Willy S)" />
                 <div class="bucket-checkboxes">
                     <label><input type="checkbox" value="vocals" /> Vocals</label>
                     <label><input type="checkbox" value="guitar" /> Guitar</label>
                     <label><input type="checkbox" value="bass" /> Bass</label>
                     <label><input type="checkbox" value="drums" /> Drums</label>
-                    <label><input type="checkbox" value="misc" /> Misc</label>
+                    <label><input type="checkbox" value="misc" id="misc-checkbox" onchange="toggleMiscInstrument()" /> Misc</label>
+                    <input type="text" id="misc-instrument" placeholder="Instrument (e.g., keys, violin)"
+                           style="display: none; padding: 8px; font-size: 14px; border: 1px solid #ddd; border-radius: 4px;" />
                     <label><input type="checkbox" value="art" /> Art</label>
                 </div>
                 <button onclick="addPerson()">Add Person</button>
@@ -387,10 +389,24 @@
             document.getElementById(tabName).classList.add('active');
         }
 
+        // Toggle misc instrument input
+        function toggleMiscInstrument() {
+            const miscCheckbox = document.getElementById('misc-checkbox');
+            const instrumentInput = document.getElementById('misc-instrument');
+
+            if (miscCheckbox.checked) {
+                instrumentInput.style.display = 'inline-block';
+                instrumentInput.focus();
+            } else {
+                instrumentInput.style.display = 'none';
+                instrumentInput.value = '';
+            }
+        }
+
         // Name Input Functions
         function addPerson() {
             const nameInput = document.getElementById('person-name');
-            const name = nameInput.value.trim();
+            let name = nameInput.value.trim();
 
             if (!name) {
                 alert('Please enter a name');
@@ -406,6 +422,19 @@
 
             const buckets = Array.from(checkboxes).map(cb => cb.value);
 
+            // Handle misc with instrument
+            const miscCheckbox = document.getElementById('misc-checkbox');
+            const instrumentInput = document.getElementById('misc-instrument');
+
+            if (miscCheckbox.checked && instrumentInput.value.trim()) {
+                // Append instrument to name for misc bucket
+                const instrument = instrumentInput.value.trim();
+                name = `${name} (${instrument})`;
+            } else if (miscCheckbox.checked && !instrumentInput.value.trim()) {
+                alert('Please specify an instrument for Misc');
+                return;
+            }
+
             // Add to roster
             buckets.forEach(bucket => {
                 roster[bucket].add(name);
@@ -416,6 +445,8 @@
 
             // Clear form
             nameInput.value = '';
+            instrumentInput.value = '';
+            instrumentInput.style.display = 'none';
             checkboxes.forEach(cb => cb.checked = false);
 
             renderRoster();
