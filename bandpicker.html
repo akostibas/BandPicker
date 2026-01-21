@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BandPicker 1.6 - MUSIC SKYNET</title>
+    <title>BandPicker 1.7 - MUSIC SKYNET</title>
     <style>
         * {
             margin: 0;
@@ -378,7 +378,7 @@
 <body>
     <div class="header-section">
         <h1>BandPicker - MUSIC SKYNET</h1>
-        <div class="version">v1.6</div>
+        <div class="version">v1.7</div>
         <button class="clear-data-btn" onclick="clearAllData()">Clear All Data</button>
     </div>
 
@@ -839,22 +839,33 @@
                 const reallyAvailable = available.filter(name => !alreadyInBand.has(name));
 
                 if (reallyAvailable.length === 0) {
-                    alert('No one else available for this role');
+                    alert(`No one else available for ${role}.\n\nEveryone in this role is already in this band or unavailable.`);
                     return;
                 }
 
                 const choice = prompt(
                     `Choose someone for ${role}:\n\n` +
-                    reallyAvailable.map((p, i) => `${i + 1}. ${p}`).join('\n')
+                    reallyAvailable.map((p, i) => `${i + 1}. ${p}`).join('\n') +
+                    `\n\nEnter a number from 1 to ${reallyAvailable.length}`
                 );
 
-                if (choice === null) return;
+                if (choice === null) return; // User clicked Cancel
 
-                const choiceIndex = parseInt(choice) - 1;
+                const choiceNum = parseInt(choice, 10);
+
+                // Check if it's a valid number
+                if (isNaN(choiceNum)) {
+                    alert(`Invalid input: "${choice}"\n\nPlease enter a number from 1 to ${reallyAvailable.length}.`);
+                    return;
+                }
+
+                const choiceIndex = choiceNum - 1;
+
+                // Check if it's in the valid range
                 if (choiceIndex >= 0 && choiceIndex < reallyAvailable.length) {
                     band.members[memberIndex].name = reallyAvailable[choiceIndex];
                 } else {
-                    alert('Invalid choice');
+                    alert(`Invalid choice: ${choiceNum}\n\nPlease enter a number from 1 to ${reallyAvailable.length}.\n\nYou entered: "${choice}"`);
                     return;
                 }
             }
@@ -871,7 +882,9 @@
         }
 
         function addRoleToBand(bandIndex) {
-            const role = prompt('Enter role:\n1. Vocals\n2. Guitar\n3. Bass\n4. Drums\n5. Misc\n6. Art');
+            const role = prompt('Enter role:\n\n1. Vocals\n2. Guitar\n3. Bass\n4. Drums\n5. Misc\n6. Art\n\nEnter a number from 1 to 6');
+
+            if (role === null) return; // User clicked Cancel
 
             const roleMap = {
                 '1': 'vocals',
@@ -882,9 +895,9 @@
                 '6': 'art'
             };
 
-            const selectedRole = roleMap[role];
+            const selectedRole = roleMap[role.trim()];
             if (!selectedRole) {
-                alert('Invalid role');
+                alert(`Invalid role: "${role}"\n\nPlease enter a number from 1 to 6:\n1. Vocals\n2. Guitar\n3. Bass\n4. Drums\n5. Misc\n6. Art`);
                 return;
             }
 
