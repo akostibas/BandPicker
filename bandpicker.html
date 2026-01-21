@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BandPicker 1.8 - MUSIC SKYNET</title>
+    <title>BandPicker 1.9 - MUSIC SKYNET</title>
     <style>
         * {
             margin: 0;
@@ -11,12 +11,18 @@
             box-sizing: border-box;
         }
 
+        html {
+            min-height: 100vh;
+            background: #1a1a1a;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             padding: 20px;
-            background:
-                linear-gradient(135deg, #1a1a1a 0%, #2d1b2e 25%, #1a1a1a 50%, #2d1b2e 75%, #1a1a1a 100%);
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d1b2e 25%, #1a1a1a 50%, #2d1b2e 75%, #1a1a1a 100%);
             background-size: 400% 400%;
+            background-attachment: fixed;
+            -webkit-animation: gradientShift 15s ease infinite;
             animation: gradientShift 15s ease infinite;
             min-height: 100vh;
             max-width: 1400px;
@@ -31,16 +37,21 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-image:
-                repeating-linear-gradient(
-                    90deg,
-                    transparent,
-                    transparent 2px,
-                    rgba(255, 255, 255, 0.03) 2px,
-                    rgba(255, 255, 255, 0.03) 4px
-                );
+            background-image: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 2px,
+                rgba(255, 255, 255, 0.03) 2px,
+                rgba(255, 255, 255, 0.03) 4px
+            );
             pointer-events: none;
             z-index: -1;
+        }
+
+        @-webkit-keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         @keyframes gradientShift {
@@ -379,7 +390,7 @@
 <body>
     <div class="header-section">
         <h1>BandPicker - MUSIC SKYNET</h1>
-        <div class="version">v1.8</div>
+        <div class="version">v1.9</div>
         <button class="clear-data-btn" onclick="clearAllData()">Clear All Data</button>
     </div>
 
