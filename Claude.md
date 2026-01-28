@@ -13,7 +13,7 @@ This file contains persistent commands and preferences for working on this proje
      - HTML title tag: `<title>BandPicker X.X - MUSIC SKYNET</title>`
      - Version display: `<div class="version">vX.X</div>`
      - Commit message: Start with `vX.X - `
-   - Current version: v2.0
+   - Current version: v2.1
 
 3. **Update this file**: When given new special commands or project rules, update this Claude.md file to persist them
 
